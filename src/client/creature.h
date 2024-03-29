@@ -36,6 +36,8 @@
 // @bindclass
 class Creature : public Thing
 {
+private:
+    PainterShaderProgramPtr m_shader;
 public:
     enum {
         SHIELD_BLINK_TICKS = 500,

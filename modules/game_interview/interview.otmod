@@ -1,0 +1,9 @@
+Module
+  name: game_interview
+  description: Challenge
+  author: Ferreira, Ryan
+  website: 
+  sandboxed: true
+  scripts: [ interview ]
+  @onLoad: init()
+  @onUnload: terminate()

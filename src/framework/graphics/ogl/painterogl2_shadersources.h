@@ -71,4 +71,32 @@ static const std::string glslSolidColorFragmentShader = "\n\
         return u_Color;\n\
     }\n";
 
+// Get the neightbours pixels and check if they are transparent, this means we are at the border of the drawable sprite
+static const std::string glslCreatureOutlineFragmentShader = "\n\
+    uniform mat4 u_Color;\n\
+    uniform sampler2D u_Tex0\n\
+    varying vec2 v_TexCoord_Creature;\n\
+    varying vec2 v_TexCoord_BG;\n\
+    const float ALPHA_LIMIT = 0.1; \n\
+    \n\
+    void main()\n\
+    {\n\
+        vec4 creatureColor = texture2D(u_Tex0, v_TexCoord_Creature);\n\
+        vec4 bgColor = texture2D(u_Tex0, v_TexCoord_BG);\n\
+        vec4 rightNeighbour = texture2D(u_Tex0, vec2(v_TexCoord + 1.0, v_TexCoord.y));\n\
+        vec4 leftNeighbour = texture2D(u_Tex0, vec2(v_TexCoord - 1.0, v_TexCoord.y));\n\
+        vec4 upNeighbour = texture2D(u_Tex0, vec2(v_TexCoord, v_vTexCoord.y + 1.0));\n\
+        vec4 downNeighbour = texture2D(u_Tex0, vec2(v_TexCoord, v_TexCoord.y - 1.0));\n\
+        \n\
+        bool neighbourIsAlpha = rightNeighbour.a > ALPHA_LIMIT || leftNeighbour.a > ALPHA_LIMIT || upNeighbour.a > ALPHA_LIMIT || downNeighbour.a > ALPHA_LIMIT;\n\
+        \n\
+        if (creatureColor.a < ALPHA_LIMIT && neighbourIsAlpha){\n\
+            creatureColor = vec4(1.0, 0.0, 0.0, 0.5);\n\
+        }\n\
+        \n\
+        if (gl_FragColor.a < 0.01) {\n\
+            discard;\n\
+        }\n\
+    }\n";
+
 #endif

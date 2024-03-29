@@ -1,0 +1,11 @@
+MainWindow
+  id: interviewWindow
+  !text: tr('Interview')
+  size: 550 400
+  @onEscape: toggle()
+
+  Button
+    id: btnJump
+    !text: tr('Jump!')
+    width: 64
+    @onClick: jump()

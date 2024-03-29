@@ -29,6 +29,7 @@
 #include "game.h"
 #include "effect.h"
 #include "luavaluecasts.h"
+#include "shadermanager.h"
 #include "lightview.h"
 
 #include <framework/graphics/graphics.h>
@@ -61,6 +62,7 @@ Creature::Creature() : Thing()
     m_footStep = 0;
     m_speedFormula.fill(-1);
     m_outfitColor = Color::white;
+    m_shader = g_shaders.createFragmentShaderFromCode("PlayerOutliner", glslPlayerOutlineFragmentShader);
 }
 
 void Creature::draw(const Point& dest, float scaleFactor, bool animate, LightView *lightView)
@@ -99,6 +101,15 @@ void Creature::draw(const Point& dest, float scaleFactor, bool animate, LightVie
 
         if(light.intensity > 0)
             lightView->addLightSource(dest + (animationOffset + Point(16,16)) * scaleFactor, scaleFactor, light);
+    }
+
+    // TODO - set the shader, set the tex for the outfit, the background
+    if (isLocalPlayer())
+    {
+        /*m_shader->bind();
+        m_shader->setAttributeArray(ShaderManager::MAP_GLOBAL_COORD, globalCoord.x / (float)framebufferRect.height(), globalCoord.y / (float)framebufferRect.height());
+        m_shader->setAttributeArray(ShaderManager::MAP_ZOOM, scaleFactor);
+        g_painter->setShaderProgram(m_shader);*/
     }
 }
 
